@@ -1,0 +1,10 @@
+CHANGES
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
+README.mkdn
+lib/Class/Forward.pm
+t/00-load.t
+t/lib/MyApp.pm
