@@ -2,13 +2,21 @@ NAME
     Class::Forward - A class dispatcher that handles namespaces like paths
 
 VERSION
-    version 0.01
+    version 0.02
 
 SYNOPSIS
         use CGI;
         use Class::Forward;
     
         my $q = clsf '/cgi.new'; # srsly?
+    
+        # OO syntax
+    
+        my $class = Class::Forward->new;
+    
+        $class->namespace(__PACKAGE__);
+    
+        my $root = $class->forward('//.new');
 
 DESCRIPTION
     Class::Forward is designed to simply return class names or dispatch
@@ -42,7 +50,7 @@ EXPORTS
         1;
 
     The clsf function takes two arguments, the shorthand to be translated,
-    and an optional list of arguments to be passed to the (optional) method
+    and an optional list of arguments to be passed to the last method
     appended to the shorthand.
 
     NOTE: There is only limited support for walk up a path, this is

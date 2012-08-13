@@ -19,8 +19,11 @@ use_ok 'Class::Forward';
     
     use MyApp;
     
+    my  $last;
+    
     sub clsf_ok {
-        ok $_[1] eq clsf("$_[0]"), "$_[1] namespace translated OK";
+        $last = clsf("$_[0]"); 
+        ok $_[1] eq $last, "$_[1] namespace translated OK";
     }
     
     # simple namespace translation tests
@@ -57,7 +60,7 @@ use_ok 'Class::Forward';
     my  $last;
     
     sub clsf_ok {
-        $last = clsf("$_[0]");
+        $last = clsf("$_[0]"); 
         ok $_[1] eq $last, "$_[1] namespace translated OK";
     }
     

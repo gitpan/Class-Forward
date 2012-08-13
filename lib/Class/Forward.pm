@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.01';
+    $Class::Forward::VERSION = '0.02';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.01';    # VERSION
+our $VERSION = '0.02';    # VERSION
 
 use Exporter ();
 
@@ -18,12 +18,43 @@ our @EXPORT = qw(clsf);
 
 sub clsf {
 
-    my ($shorthand, @arguments) = @_;
+    my $namespace = caller(0);
+
+    return Class::Forward->new(namespace => $namespace)->forward(@_);
+
+}
+
+sub new {
+
+    my $self = bless {}, (shift);
+
+    my %args = @_ ? @_ : ();
+
+    $self->{namespace} = $args{namespace} if defined $args{namespace};
+
+    return $self;
+
+}
+
+sub namespace {
+
+    my ($self, $namespace) = @_;
+
+    $self->{namespace} = $namespace if $namespace;
+
+    return $self->{namespace};
+
+}
+
+sub forward {
+
+    my ($self, $shorthand, @arguments) = @_;
 
     my @class;
     my @methods;
 
-    my $caller = caller(0);
+    my $caller = $self->namespace();
+
     my @segments = split /\//, $shorthand if $shorthand;
 
     if ($shorthand) {
@@ -152,7 +183,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -160,6 +191,14 @@ version 0.01
     use Class::Forward;
     
     my $q = clsf '/cgi.new'; # srsly?
+    
+    # OO syntax
+    
+    my $class = Class::Forward->new;
+    
+    $class->namespace(__PACKAGE__);
+    
+    my $root = $class->forward('//.new');
 
 =head1 DESCRIPTION
 
@@ -196,7 +235,7 @@ begets the follow functionaility:
     1;
 
 The clsf function takes two arguments, the shorthand to be translated, and an
-optional list of arguments to be passed to the (optional) method appended to the
+optional list of arguments to be passed to the last method appended to the
 shorthand.
 
 NOTE: There is only limited support for walk up a path, this is generally a bad
