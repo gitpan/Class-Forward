@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.02';
+    $Class::Forward::VERSION = '0.03';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.02';    # VERSION
+our $VERSION = '0.03';    # VERSION
 
 use Exporter ();
 
@@ -183,22 +183,33 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
-    use CGI;
+    # OO Usage and Syntax
+    
+    package MyApp;
+    
     use Class::Forward;
     
-    my $q = clsf '/cgi.new'; # srsly?
+    ...
     
-    # OO syntax
+    sub class {
+        
+        my ($self, $shorthand, @arguments) = @_;
+        
+        my $clsf = Class::Forward->new(namespace => ref $self);
+        
+        return $clsf->forward($shorthand);
+        
+    }
     
-    my $class = Class::Forward->new;
+    package main;
     
-    $class->namespace(__PACKAGE__);
+    my $app = MyApp->new;
     
-    my $root = $class->forward('//.new');
+    my $data = $app->class('./data.new'); # returns a new MyApp::Data object
 
 =head1 DESCRIPTION
 
