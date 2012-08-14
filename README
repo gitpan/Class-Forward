@@ -2,7 +2,7 @@ NAME
     Class::Forward - A class dispatcher that handles namespaces like paths
 
 VERSION
-    version 0.03
+    version 0.04
 
 SYNOPSIS
         # OO Usage and Syntax
@@ -37,7 +37,7 @@ DESCRIPTION
 EXPORTS
   clsf
     The exported function clsf is responsible for resolving your shorthand.
-    It begets the follow functionaility:
+    It begets the follow functionality:
 
         package App::Store;
     
@@ -48,13 +48,14 @@ EXPORTS
         clsf './user';                    # returns App::Store::User
         clsf './user.new', name => 'N30'; # return a new App::Store::User object
         clsf './user_profile.new';        # ... App::Store::UserProfile object
+        clsf '../user';                   # returns App::User
         clsf '//';                        # returns App; (top of the calling class)
         clsf '//.new';                    # returns a new App object
         clsf '//view';                    # ... returns App::View
         clsf '//view.new';                # ... returns a new App::View object
         clsf '//view.new.render';         # ... dispatches methods in succession
-        clsf 'cgi';                       # returns CGI
-        clsf '/cgi';                      # ... also returns CGI
+        clsf 'cgi';                       # returns App::Store::Cgi
+        clsf '/cgi';                      # returns CGI (note the case)
     
         # yada yada
     
@@ -64,10 +65,11 @@ EXPORTS
     and an optional list of arguments to be passed to the last method
     appended to the shorthand.
 
-    NOTE: There is only limited support for walk up a path, this is
-    generally a bad idea, writing code that executes other code based on its
-    namespace's relativity to the current class could yield unpredictable
-    results, especially if the calling class is ever relocated.
+    NOTE: Class::Forward also has support for walking up a path although
+    this should be done with caution, writing code that executes other code
+    based on its namespace's relativity to the current class could yield
+    unpredictable results, especially if the calling class is ever
+    relocated.
 
 SEE ALSO
     Along my travels I recall visiting a similar module on the CPAN called

@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.03';
+    $Class::Forward::VERSION = '0.04';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.03';    # VERSION
+our $VERSION = '0.04';    # VERSION
 
 use Exporter ();
 
@@ -50,79 +50,60 @@ sub forward {
 
     my ($self, $shorthand, @arguments) = @_;
 
-    my @class;
-    my @methods;
+    my $namespace = $self->namespace();
 
-    my $caller = $self->namespace();
+    my $backspace;
+    my $methods;
+    my $myspace;
 
-    my @segments = split /\//, $shorthand if $shorthand;
+    my @class   = ();
+    my @methods = ();
 
     if ($shorthand) {
 
-        if ($shorthand eq '//' && !@segments) {
+        # capture path relativity notation
 
-            @segments = ('', '');
+        $backspace = $1 if $shorthand =~ s/^((\.{1,2}\/){1,})//;
 
+        $backspace = $1 if $shorthand =~ s/^(\/+)// && !$backspace;
+
+        # capture method call notation
+
+        ($methods) = $1 if $shorthand =~ s/(\.\w+){1,}$//;
+
+        # convert shorthand to package notation
+
+        $myspace = join "::", map {
+            join '', map { ucfirst lc } split /_/, $_
+          }
+          split /[\-\/]/, $shorthand;
+
+        if ($backspace) {
+            unless ($backspace =~ /^\/$/) {
+                @class = split /::/, $namespace;
+                if ($backspace =~ /^\/\/$/) {
+                    while (@class > 1) {
+                        pop @class;
+                    }
+                }
+                else {
+                    unless ($backspace =~ /^\.\/$/) {
+                        my @backspaces = $backspace =~ /\.\.\//g;
+                        for (@backspaces) {
+                            pop @class unless @class == 1;
+                        }
+                    }
+                }
+            }
         }
+
+        push @class, split /::/, $myspace if $myspace;
+
+        push @methods, grep /\w+/, split /\./, $methods if $methods;
 
     }
 
-    if (@segments) {
-
-        # .method condition
-        $segments[-1] =~ s/\.([\w\.]+)$//;
-
-        push @methods, split /\./, $1 if $1;
-
-        # // condition
-        if (!$segments[0] && !$segments[1]) {
-
-            # special condition, return top-level namespace of caller
-
-            splice @segments, 0, 2;
-
-            my $top = $caller;
-
-            ($top) = $top =~ /^([^:]+)/ if $top =~ /:/;
-
-            push @class, $top;
-
-        }
-
-        # / condition
-        elsif (!$segments[0]) {
-
-            splice @segments, 0, 1;
-
-        }
-
-        # ./ condition
-        elsif ($segments[0] eq '.') {
-
-            splice @segments, 0, 1;
-
-            push @class, $caller;
-
-        }
-
-        # construct namespace from remaining segments
-
-        foreach my $segment (@segments) {
-
-            push @class, map {
-                join '', map { ucfirst lc } split /_/, $_
-              }
-              split /-/, $segment;
-
-        }
-
-    }
-
-    else {
-
-        push @class, $caller;
-
-    }
+    push @class, $namespace if !@class;
 
     # build class namespace
 
@@ -135,14 +116,17 @@ sub forward {
 
     unless ($INC{$file}) {
 
-        # dont assume $#!+
+        # don't assume $#!+
 
         my @matches = grep(/^$file/i, keys %INC);
 
-        $class = $matches[0] if @matches == 1;
+        if (@matches == 1) {
 
-        $class =~ s/\//::/g;
-        $class =~ s/\.pm$//;
+            $class = $matches[0];
+            $class =~ s/\//::/g;
+            $class =~ s/\.pm$//;
+
+        }
 
     }
 
@@ -183,7 +167,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -222,7 +206,7 @@ against class namespaces.
 =head2 clsf
 
 The exported function clsf is responsible for resolving your shorthand. It
-begets the follow functionaility:
+begets the follow functionality:
 
     package App::Store;
     
@@ -233,13 +217,14 @@ begets the follow functionaility:
     clsf './user';                    # returns App::Store::User
     clsf './user.new', name => 'N30'; # return a new App::Store::User object
     clsf './user_profile.new';        # ... App::Store::UserProfile object
+    clsf '../user';                   # returns App::User
     clsf '//';                        # returns App; (top of the calling class)
     clsf '//.new';                    # returns a new App object
     clsf '//view';                    # ... returns App::View
     clsf '//view.new';                # ... returns a new App::View object
     clsf '//view.new.render';         # ... dispatches methods in succession
-    clsf 'cgi';                       # returns CGI
-    clsf '/cgi';                      # ... also returns CGI
+    clsf 'cgi';                       # returns App::Store::Cgi
+    clsf '/cgi';                      # returns CGI (note the case)
     
     # yada yada
     
@@ -249,10 +234,10 @@ The clsf function takes two arguments, the shorthand to be translated, and an
 optional list of arguments to be passed to the last method appended to the
 shorthand.
 
-NOTE: There is only limited support for walk up a path, this is generally a bad
-idea, writing code that executes other code based on its namespace's relativity
-to the current class could yield unpredictable results, especially if the
-calling class is ever relocated.
+NOTE: Class::Forward also has support for walking up a path although this should
+be done with caution, writing code that executes other code based on its
+namespace's relativity to the current class could yield unpredictable results,
+especially if the calling class is ever relocated.
 
 =head1 SEE ALSO
 
