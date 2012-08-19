@@ -4,7 +4,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 # VERSION
 
-version 0.04
+version 0.05
 
 # SYNOPSIS
 
@@ -26,10 +26,10 @@ version 0.04
         my ($self, $shorthand, @arguments) = @_;
         
 
-        my $clsf = Class::Forward->new(namespace => ref $self);
+        my $class = Class::Forward->new(namespace => ref $self);
         
 
-        return $clsf->forward($shorthand);
+        return $class->forward($shorthand, @arguments);
         
 
     }
@@ -41,7 +41,7 @@ version 0.04
     my $app = MyApp->new;
     
 
-    my $data = $app->class('./data.new'); # returns a new MyApp::Data object
+    my $data = $app->class('data.new'); # returns a new MyApp::Data object
 
 # DESCRIPTION
 
@@ -74,7 +74,7 @@ begets the follow functionality:
     clsf '//view.new';                # ... returns a new App::View object
     clsf '//view.new.render';         # ... dispatches methods in succession
     clsf 'cgi';                       # returns App::Store::Cgi
-    clsf '/cgi';                      # returns CGI (note the case)
+    clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
     
 
     # yada yada

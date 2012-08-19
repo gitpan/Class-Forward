@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.04';
+    $Class::Forward::VERSION = '0.05';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.04';    # VERSION
+our $VERSION = '0.05';    # VERSION
 
 use Exporter ();
 
@@ -18,9 +18,7 @@ our @EXPORT = qw(clsf);
 
 sub clsf {
 
-    my $namespace = caller(0);
-
-    return Class::Forward->new(namespace => $namespace)->forward(@_);
+    return Class::Forward->new(namespace => (caller)[0])->forward(@_);
 
 }
 
@@ -50,7 +48,7 @@ sub forward {
 
     my ($self, $shorthand, @arguments) = @_;
 
-    my $namespace = $self->namespace();
+    my $namespace = $self->namespace() || (caller)[0] || 'main';
 
     my $backspace;
     my $methods;
@@ -95,6 +93,9 @@ sub forward {
                     }
                 }
             }
+        }
+        else {
+            push @class, $namespace;
         }
 
         push @class, split /::/, $myspace if $myspace;
@@ -158,7 +159,6 @@ sub forward {
 
 1;
 __END__
-
 =pod
 
 =head1 NAME
@@ -167,7 +167,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -183,9 +183,9 @@ version 0.04
         
         my ($self, $shorthand, @arguments) = @_;
         
-        my $clsf = Class::Forward->new(namespace => ref $self);
+        my $class = Class::Forward->new(namespace => ref $self);
         
-        return $clsf->forward($shorthand);
+        return $class->forward($shorthand, @arguments);
         
     }
     
@@ -193,7 +193,7 @@ version 0.04
     
     my $app = MyApp->new;
     
-    my $data = $app->class('./data.new'); # returns a new MyApp::Data object
+    my $data = $app->class('data.new'); # returns a new MyApp::Data object
 
 =head1 DESCRIPTION
 
@@ -224,7 +224,7 @@ begets the follow functionality:
     clsf '//view.new';                # ... returns a new App::View object
     clsf '//view.new.render';         # ... dispatches methods in succession
     clsf 'cgi';                       # returns App::Store::Cgi
-    clsf '/cgi';                      # returns CGI (note the case)
+    clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
     
     # yada yada
     

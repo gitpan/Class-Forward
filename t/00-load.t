@@ -37,13 +37,13 @@ use_ok 'Class::Forward';
     clsf_ok "./"    => "main";
     clsf_ok "/"     => "main";
     
-    clsf_ok "main"           => "Main";
-    clsf_ok "test-more"      => "Test::More";
+    clsf_ok "main"           => "main::Main";
+    clsf_ok "/test-more"      => "Test::More";
     
-    clsf_ok "class-forward"  => "Class::Forward";
-    clsf_ok "CLASS-FORWARD"  => "Class::Forward";
+    clsf_ok "/class-forward"  => "Class::Forward";
+    clsf_ok "/CLASS-FORWARD"  => "Class::Forward";
     
-    clsf_ok "my_app" => "MyApp";
+    clsf_ok "/my_app" => "MyApp";
     
     ok "MyApp" eq ref clsf('my_app.new'), "Dipatched MyApp->new method call";
     ok "Hello World" eq clsf('my_app.new.hello_world'), "Dipatched MyApp->new->hello_world method calls in succession";
