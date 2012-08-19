@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.05';
+    $Class::Forward::VERSION = '0.06';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.05';    # VERSION
+our $VERSION = '0.06';    # VERSION
 
 use Exporter ();
 
@@ -67,7 +67,7 @@ sub forward {
 
         # capture method call notation
 
-        ($methods) = $1 if $shorthand =~ s/(\.\w+){1,}$//;
+        ($methods) = $1 if $shorthand =~ s/((\.\w+){1,})$//;
 
         # convert shorthand to package notation
 
@@ -167,7 +167,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.05
+version 0.06
 
 =head1 SYNOPSIS
 
