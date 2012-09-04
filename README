@@ -2,31 +2,31 @@ NAME
     Class::Forward - A class dispatcher that handles namespaces like paths
 
 VERSION
-    version 0.06
+    version 0.07
 
 SYNOPSIS
         # OO Usage and Syntax
-    
+
         package MyApp;
-    
+
         use Class::Forward;
-    
+
         ...
-    
+
         sub class {
-        
+
             my ($self, $shorthand, @arguments) = @_;
-        
+
             my $class = Class::Forward->new(namespace => ref $self);
-        
+
             return $class->forward($shorthand, @arguments);
-        
+
         }
-    
+
         package main;
-    
+
         my $app = MyApp->new;
-    
+
         my $data = $app->class('data.new'); # returns a new MyApp::Data object
 
 DESCRIPTION
@@ -40,10 +40,10 @@ EXPORTS
     It begets the follow functionality:
 
         package App::Store;
-    
+
         use CGI;
         use Class::Forward;
-    
+
         clsf;                             # returns App::Store
         clsf './user';                    # returns App::Store::User
         clsf './user.new', name => 'N30'; # return a new App::Store::User object
@@ -56,9 +56,9 @@ EXPORTS
         clsf '//view.new.render';         # ... dispatches methods in succession
         clsf 'cgi';                       # returns App::Store::Cgi
         clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
-    
+
         # yada yada
-    
+
         1;
 
     The clsf function takes two arguments, the shorthand to be translated,

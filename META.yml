@@ -13,7 +13,6 @@ meta-spec:
   version: 1.4
 name: Class-Forward
 resources:
-  bugtracker: https://github.com/alnewkirk/Class-Forward/issues
-  homepage: https://github.com/alnewkirk/Class-Forward
-  repository: http://github.com/alnewkirk/Class-Forward.git
-version: 0.06
+  homepage: https://git.ana.io/Class-Forward.git/tree
+  repository: https://git.ana.io/Class-Forward.git
+version: 0.07

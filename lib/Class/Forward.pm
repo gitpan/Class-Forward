@@ -2,18 +2,19 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.06';
+    $Class::Forward::VERSION = '0.07';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.06';    # VERSION
+our $VERSION = '0.07';    # VERSION
 
 use Exporter ();
 
 our @ISA    = qw(Exporter);
 our @EXPORT = qw(clsf);
+our %CACHE  = ();
 
 
 sub clsf {
@@ -57,79 +58,88 @@ sub forward {
     my @class   = ();
     my @methods = ();
 
-    if ($shorthand) {
+    my $CACHE_KEY = $shorthand;
+    $CACHE_KEY .= "\@$namespace";
 
-        # capture path relativity notation
+    my $class = $CACHE{$CACHE_KEY} ||= do {
 
-        $backspace = $1 if $shorthand =~ s/^((\.{1,2}\/){1,})//;
+        if ($shorthand) {
 
-        $backspace = $1 if $shorthand =~ s/^(\/+)// && !$backspace;
+            # capture path relativity notation
 
-        # capture method call notation
+            $backspace = $1 if $shorthand =~ s/^((\.{1,2}\/){1,})//;
 
-        ($methods) = $1 if $shorthand =~ s/((\.\w+){1,})$//;
+            $backspace = $1 if $shorthand =~ s/^(\/+)// && !$backspace;
 
-        # convert shorthand to package notation
+            # capture method call notation
 
-        $myspace = join "::", map {
-            join '', map { ucfirst lc } split /_/, $_
-          }
-          split /[\-\/]/, $shorthand;
+            ($methods) = $1 if $shorthand =~ s/((\.\w+){1,})$//;
 
-        if ($backspace) {
-            unless ($backspace =~ /^\/$/) {
-                @class = split /::/, $namespace;
-                if ($backspace =~ /^\/\/$/) {
-                    while (@class > 1) {
-                        pop @class;
+            # convert shorthand to package notation
+
+            $myspace = join "::", map {
+                join '', map { ucfirst lc } split /_/, $_
+            } split /[\-\/]/, $shorthand;
+
+            if ($backspace) {
+                unless ($backspace =~ /^\/$/) {
+                    @class = split /::/, $namespace;
+                    if ($backspace =~ /^\/\/$/) {
+                        while (@class > 1) {
+                            pop @class;
+                        }
                     }
-                }
-                else {
-                    unless ($backspace =~ /^\.\/$/) {
-                        my @backspaces = $backspace =~ /\.\.\//g;
-                        for (@backspaces) {
-                            pop @class unless @class == 1;
+                    else {
+                        unless ($backspace =~ /^\.\/$/) {
+                            my @backspaces = $backspace =~ /\.\.\//g;
+                            for (@backspaces) {
+                                pop @class unless @class == 1;
+                            }
                         }
                     }
                 }
             }
-        }
-        else {
-            push @class, $namespace;
-        }
+            else {
+                push @class, $namespace;
+            }
 
-        push @class, split /::/, $myspace if $myspace;
+            push @class, split /::/, $myspace if $myspace;
 
-        push @methods, grep /\w+/, split /\./, $methods if $methods;
-
-    }
-
-    push @class, $namespace if !@class;
-
-    # build class namespace
-
-    my $class = @class > 1 ? join('::', @class) : $class[0];
-
-    # leverage @INC to validate and possibly correct any case issues
-
-    my $file = "$class.pm";
-    $file =~ s/::/\//g;
-
-    unless ($INC{$file}) {
-
-        # don't assume $#!+
-
-        my @matches = grep(/^$file/i, keys %INC);
-
-        if (@matches == 1) {
-
-            $class = $matches[0];
-            $class =~ s/\//::/g;
-            $class =~ s/\.pm$//;
+            push @methods, grep /\w+/, split /\./, $methods if $methods;
 
         }
 
-    }
+        push @class, $namespace if !@class;
+
+        # build class namespace
+
+        my $class = @class > 1 ? join('::', @class) : $class[0];
+
+        # leverage @INC to validate and possibly correct any case issues
+
+        my $file = "$class.pm";
+        $file =~ s/::/\//g;
+
+        unless ($INC{$file}) {
+
+            # don't assume $#!+
+
+            my @matches = grep(/^$file/i, keys %INC);
+
+            if (@matches == 1) {
+
+                $class = $matches[0];
+                $class =~ s/\//::/g;
+                $class =~ s/\.pm$//;
+
+            }
+
+        }
+
+        # cache the results
+        $CACHE{$CACHE_KEY} = $class;
+
+    };
 
     # return result of method call(s) or class name
 
@@ -158,6 +168,7 @@ sub forward {
 
 
 1;
+
 __END__
 =pod
 
@@ -167,32 +178,32 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 
     # OO Usage and Syntax
-    
+
     package MyApp;
-    
+
     use Class::Forward;
-    
+
     ...
-    
+
     sub class {
-        
+
         my ($self, $shorthand, @arguments) = @_;
-        
+
         my $class = Class::Forward->new(namespace => ref $self);
-        
+
         return $class->forward($shorthand, @arguments);
-        
+
     }
-    
+
     package main;
-    
+
     my $app = MyApp->new;
-    
+
     my $data = $app->class('data.new'); # returns a new MyApp::Data object
 
 =head1 DESCRIPTION
@@ -209,10 +220,10 @@ The exported function clsf is responsible for resolving your shorthand. It
 begets the follow functionality:
 
     package App::Store;
-    
+
     use CGI;
     use Class::Forward;
-    
+
     clsf;                             # returns App::Store
     clsf './user';                    # returns App::Store::User
     clsf './user.new', name => 'N30'; # return a new App::Store::User object
@@ -225,9 +236,9 @@ begets the follow functionality:
     clsf '//view.new.render';         # ... dispatches methods in succession
     clsf 'cgi';                       # returns App::Store::Cgi
     clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
-    
+
     # yada yada
-    
+
     1;
 
 The clsf function takes two arguments, the shorthand to be translated, and an
