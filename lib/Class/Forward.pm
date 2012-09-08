@@ -2,13 +2,13 @@
 
 package Class::Forward;
 {
-    $Class::Forward::VERSION = '0.07';
+    $Class::Forward::VERSION = '0.08';
 }
 
 use strict;
 use warnings;
 
-our $VERSION = '0.07';    # VERSION
+our $VERSION = '0.08';    # VERSION
 
 use Exporter ();
 
@@ -55,13 +55,14 @@ sub forward {
     my $methods;
     my $myspace;
 
+    my $class   = '';
     my @class   = ();
     my @methods = ();
 
     my $CACHE_KEY = $shorthand;
     $CACHE_KEY .= "\@$namespace";
 
-    my $class = $CACHE{$CACHE_KEY} ||= do {
+    my $DATA = $CACHE{$CACHE_KEY} ||= do {
 
         if ($shorthand) {
 
@@ -137,9 +138,15 @@ sub forward {
         }
 
         # cache the results
-        $CACHE{$CACHE_KEY} = $class;
+        $CACHE{$CACHE_KEY} = {
+            'CLASS'   => $class,
+            'METHODS' => [@methods]
+        };
 
     };
+
+    $class = $DATA->{'CLASS'};
+    @methods = @{$DATA->{'METHODS'}} if $DATA && !@methods;
 
     # return result of method call(s) or class name
 
@@ -178,7 +185,7 @@ Class::Forward - A class dispatcher that handles namespaces like paths
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
