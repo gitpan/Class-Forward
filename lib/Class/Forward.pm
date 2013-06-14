@@ -5,7 +5,7 @@ package Class::Forward;
 use strict;
 use warnings;
 
-our $VERSION = '0.100000'; # VERSION
+our $VERSION = '0.100001'; # VERSION
 
 use Exporter ();
 
@@ -28,6 +28,7 @@ sub clsr {
 
 }
 
+
 sub new {
 
     my $self = bless {}, (shift);
@@ -40,6 +41,7 @@ sub new {
 
 }
 
+
 sub namespace {
 
     my ($self, $namespace) = @_;
@@ -49,6 +51,7 @@ sub namespace {
     return $self->{namespace};
 
 }
+
 
 sub forward {
 
@@ -178,6 +181,7 @@ sub forward {
 
 }
 
+
 sub reverse {
 
     my ($self, $shorthand, $offset, $delimiter) = @_;
@@ -220,7 +224,7 @@ Class::Forward - Traverse Class Namspaces
 
 =head1 VERSION
 
-version 0.100000
+version 0.100001
 
 =head1 SYNOPSIS
 
@@ -245,16 +249,17 @@ version 0.100000
 
 =head1 DESCRIPTION
 
-Class::Forward is designed to simply return class names and/or dispatch method
-calls using shorthand. It uses file-system path specification conventions to
-match against class namespaces.
+Class::Forward is designed to resolve Perl namespaces from shorthand (which is
+simply a file-system path-like specification). Class::Forward can also be used
+to dispatch method calls using said shorthand. See the following exported
+functions for examples on how this can be used.
 
 =head1 EXPORTS
 
 =head2 clsf
 
-The exported function clsf is responsible for resolving your shorthand. It
-provides the follow functionality:
+The exported function clsf is responsible for resolving your shorthand. The
+following is an example of how it functions:
 
     package App::Store;
 
@@ -273,7 +278,6 @@ provides the follow functionality:
     clsf '//view.new.render';         # ... dispatches methods in succession
     clsf 'cgi';                       # returns App::Store::Cgi
     clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
-                                      # ... it tries to do the right thing
 
     1;
 
@@ -283,8 +287,8 @@ shorthand.
 
 =head2 clsr
 
-The exported function clsr is responsible for resolving your shorthand. It
-provides the follow functionality:
+The exported function clsr is responsible for resolving your shorthand. The
+following is an example of how it functions:
 
     package App::Store;
 
@@ -306,9 +310,43 @@ provides the follow functionality:
 
     1;
 
-The clsr function takes two arguments, the shorthand to be translated, and an
-optional list of arguments to be passed to the last method appended to the
-shorthand.
+The clsr function takes three arguments, the shorthand to be translated
+(required), the offset (optional level of namspace nodes to omit
+left-to-right), and the delimeter to be used to generate the resulting path
+(defaults to forward-slash).
+
+=head1 METHODS
+
+=head2 namespace
+
+The new method is used to instantiate a new instance.
+
+=head2 namespace
+
+The namespace method is used to get/set the root namespace used as an anchor for
+all resolution requests.
+
+    my $namespace = $self->namespace('MyApp');
+
+=head2 forward
+
+The forward method is used to resolve Perl namespaces from path-like shorthand.
+
+    say $self->forward('/my_app/example');
+    # prints MyApp::Example
+
+=head2 reverse
+
+The reverse method is used to generate path-like shorthand from Perl namespaces.
+
+    say $self->forward('MyApp::Example');
+    # prints /my_app/example
+
+    say $self->forward('MyApp::Example', 1);
+    # prints example
+
+    say $self->forward('MyApp::Example', 0, '_');
+    # prints _my_app_example
 
 =head1 SEE ALSO
 

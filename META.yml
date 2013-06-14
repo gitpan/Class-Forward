@@ -14,6 +14,6 @@ meta-spec:
 name: Class-Forward
 resources:
   bugtracker: https://github.com/alnewkirk/Class-Forward/issues
-  homepage: https://github.com/alnewkirk/Class-Forward
+  homepage: http://search.cpan.org/dist/Class-Forward/
   repository: git://github.com/alnewkirk/Class-Forward.git
-version: 0.100000
+version: 0.100001

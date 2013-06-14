@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
   "NAME" => "Class::Forward",
   "PREREQ_PM" => {},
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.100000",
+  "VERSION" => "0.100001",
   "test" => {
     "TESTS" => "t/*.t"
   }
