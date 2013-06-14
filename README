@@ -2,7 +2,7 @@ NAME
     Class::Forward - Traverse Class Namspaces
 
 VERSION
-    version 0.100002
+    version 0.100003
 
 SYNOPSIS
         package MyApp;
@@ -89,7 +89,7 @@ EXPORTS
     path (defaults to forward-slash).
 
 METHODS
-  namespace
+  new
     The new method is used to instantiate a new instance.
 
   namespace
@@ -120,7 +120,8 @@ METHODS
 
 SEE ALSO
     Along my travels I recall visiting a similar module on the CPAN called
-    Namespace::Dispatch which provides somewhat of the same functionality.
+    Namespace::Dispatch which is similar enough to be mentioned but really
+    tends to a completely different issue.
 
 AUTHOR
     Al Newkirk <anewkirk@ana.io>

@@ -3,8 +3,30 @@ Changes from 2012-06-14 00:00:00 +0000 to present.
 ==================================================
 
 ---------------------------------------------
-version 0.100002 at 2013-06-14 06:31:20 +0000
+version 0.100003 at 2013-06-14 06:36:03 +0000
 ---------------------------------------------
+
+  Change: 1a74ea96f7953d2d1e284cba7fc7fdbfd81d920d
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-06-14 02:35:42 +0000
+
+    fixed typo in the documentation that might confuse users 
+
+  Change: 6ab56e78b6e4c0090b61c94df1bbeda9d792f866
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-06-14 02:35:21 +0000
+
+    fixed typo in the documentation that might confuse users 
+
+---------------------------------------------
+version 0.100002 at 2013-06-14 06:31:24 +0000
+---------------------------------------------
+
+  Change: c52d120b6e7712340d857b1870b55f6dfd166d21
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-06-14 02:31:24 +0000
+
+    v0.100002 
 
   Change: 3f1b4b786789fbbefe82b4c351af6bca0f1a349c
   Author: Al Newkirk <anewkirk@ana.io>

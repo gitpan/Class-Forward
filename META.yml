@@ -16,4 +16,4 @@ resources:
   bugtracker: https://github.com/alnewkirk/Class-Forward/issues
   homepage: http://search.cpan.org/dist/Class-Forward/
   repository: git://github.com/alnewkirk/Class-Forward.git
-version: 0.100002
+version: 0.100003

@@ -5,7 +5,7 @@ package Class::Forward;
 use strict;
 use warnings;
 
-our $VERSION = '0.100002'; # VERSION
+our $VERSION = '0.100003'; # VERSION
 
 use Exporter ();
 
@@ -224,7 +224,7 @@ Class::Forward - Traverse Class Namspaces
 
 =head1 VERSION
 
-version 0.100002
+version 0.100003
 
 =head1 SYNOPSIS
 
@@ -317,7 +317,7 @@ left-to-right), and the delimeter to be used to generate the resulting path
 
 =head1 METHODS
 
-=head2 namespace
+=head2 new
 
 The new method is used to instantiate a new instance.
 
@@ -351,7 +351,8 @@ The reverse method is used to generate path-like shorthand from Perl namespaces.
 =head1 SEE ALSO
 
 Along my travels I recall visiting a similar module on the CPAN called
-L<Namespace::Dispatch> which provides somewhat of the same functionality.
+L<Namespace::Dispatch> which is similar enough to be mentioned but really
+tends to a completely different issue.
 
 =head1 AUTHOR
 
