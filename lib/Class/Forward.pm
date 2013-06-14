@@ -5,7 +5,7 @@ package Class::Forward;
 use strict;
 use warnings;
 
-our $VERSION = '0.100001'; # VERSION
+our $VERSION = '0.100002'; # VERSION
 
 use Exporter ();
 
@@ -224,7 +224,7 @@ Class::Forward - Traverse Class Namspaces
 
 =head1 VERSION
 
-version 0.100001
+version 0.100002
 
 =head1 SYNOPSIS
 
@@ -339,13 +339,13 @@ The forward method is used to resolve Perl namespaces from path-like shorthand.
 
 The reverse method is used to generate path-like shorthand from Perl namespaces.
 
-    say $self->forward('MyApp::Example');
+    say $self->reverse('MyApp::Example');
     # prints /my_app/example
 
-    say $self->forward('MyApp::Example', 1);
+    say $self->reverse('MyApp::Example', 1);
     # prints example
 
-    say $self->forward('MyApp::Example', 0, '_');
+    say $self->reverse('MyApp::Example', 0, '_');
     # prints _my_app_example
 
 =head1 SEE ALSO
