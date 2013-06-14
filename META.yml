@@ -1,18 +1,19 @@
 ---
-abstract: 'A class dispatcher that handles namespaces like paths'
+abstract: 'Traverse Class Namspaces'
 author:
   - 'Al Newkirk <anewkirk@ana.io>'
 build_requires: {}
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300021, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.130880'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Class-Forward
 resources:
-  homepage: https://git.ana.io/Class-Forward.git/tree
-  repository: https://git.ana.io/Class-Forward.git
-version: 0.08
+  bugtracker: https://github.com/alnewkirk/Class-Forward/issues
+  homepage: https://github.com/alnewkirk/Class-Forward
+  repository: git://github.com/alnewkirk/Class-Forward.git
+version: 0.100000

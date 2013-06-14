@@ -1,0 +1,74 @@
+==================================================
+Changes from 2012-06-14 00:00:00 +0000 to present.
+==================================================
+
+---------------------------------------------
+version 0.100000 at 2013-06-14 06:04:27 +0000
+---------------------------------------------
+
+  Change: 6f6c01101762aede0d4defa5f00daef835502f9d
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-06-14 02:04:01 +0000
+
+    added reverse resolution functionality for complete bi-directional
+    resolution 
+
+  Change: dfb47a4bd994bda50481885407f63a2a6d99fd8d
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-09-08 03:41:04 +0000
+
+    fixed caching of methods with cachekey and namespace 
+
+  Change: ce939e1b7ca714a6ec55b6d16292f35399974a7c
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-09-04 14:32:03 +0000
+
+    removed generated package files 
+
+  Change: b618eb1bd20883e243703ce6183d11dc2fb354de
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-09-04 14:30:54 +0000
+
+    added caching to the class name resolution 
+
+  Change: 9e8f17101b666cf26f3a1c5a029097e9fd33f0db
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-19 16:03:55 +0000
+
+    fixed method capturing regex bug 
+
+  Change: 87c476aa0cd6b63baa4f67d8ab5ed36eab52f563
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-19 07:03:27 +0000
+
+    corrected the synopsis, fixed/updated how shorthand is handle when no
+    backspace indicator is found 
+
+  Change: 6bf4d903824bdd61deedf3f49e75bfdafee3c6a1
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-13 23:31:54 +0000
+
+    ran spell-check, refactored the namespace resolution engine, and updated
+    POD 
+
+  Change: b73a7a040f903cee8ec5b9945893673c74eb9597
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-13 16:40:36 +0000
+
+    better synopsis 
+
+  Change: c75fd2191362929b38f9327bcbad0a3e6f4ec42b
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-13 03:45:22 +0000
+
+    CF gets OO syntax 
+
+  Change: f74d33efdbab5a9dfd07832a1ed30448d311a6c3
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2012-08-12 15:18:53 +0000
+
+    initial commit 
+
+================
+End of releases.
+================

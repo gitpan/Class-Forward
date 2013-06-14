@@ -1,20 +1,16 @@
 # NAME
 
-Class::Forward - A class dispatcher that handles namespaces like paths
+Class::Forward - Traverse Class Namspaces
 
 # VERSION
 
-version 0.08
+version 0.100000
 
 # SYNOPSIS
-
-    # OO Usage and Syntax
 
     package MyApp;
 
     use Class::Forward;
-
-    ...
 
     sub class {
 
@@ -28,22 +24,21 @@ version 0.08
 
     package main;
 
-    my $app = MyApp->new;
-
+    my $app  = MyApp->new;
     my $data = $app->class('data.new'); # returns a new MyApp::Data object
 
 # DESCRIPTION
 
-Class::Forward is designed to simply return class names or dispatch method calls
-using shorthand. It uses file-system path specification conventions to match
-against class namespaces.
+Class::Forward is designed to simply return class names and/or dispatch method
+calls using shorthand. It uses file-system path specification conventions to
+match against class namespaces.
 
 # EXPORTS
 
 ## clsf
 
 The exported function clsf is responsible for resolving your shorthand. It
-begets the follow functionality:
+provides the follow functionality:
 
     package App::Store;
 
@@ -62,8 +57,7 @@ begets the follow functionality:
     clsf '//view.new.render';         # ... dispatches methods in succession
     clsf 'cgi';                       # returns App::Store::Cgi
     clsf '/cgi';                      # returns Cgi (or CGI if already loaded)
-
-    # yada yada
+                                      # ... it tries to do the right thing
 
     1;
 
@@ -71,17 +65,39 @@ The clsf function takes two arguments, the shorthand to be translated, and an
 optional list of arguments to be passed to the last method appended to the
 shorthand.
 
-NOTE: Class::Forward also has support for walking up a path although this should
-be done with caution, writing code that executes other code based on its
-namespace's relativity to the current class could yield unpredictable results,
-especially if the calling class is ever relocated.
+## clsr
+
+The exported function clsr is responsible for resolving your shorthand. It
+provides the follow functionality:
+
+    package App::Store;
+
+    use CGI;
+    use Class::Forward;
+
+    clsr;                             # returns /app/store
+    clsr './user';                    # returns /app/store/user
+    clsr './user.new', name => 'N30'; # returns /app/store/user
+    clsr './user_profile';            # returns /app/store/user_profile
+    clsr '../user';                   # returns /app/user
+    clsr '//';                        # returns /app
+    clsr '//.new';                    # returns /app
+    clsr '//view';                    # returns /app/view
+    clsr '//view.new';                # returns /app/view
+    clsr '//view.new.render';         # returns /app/view
+    clsr 'cgi';                       # returns /app/store/cgi
+    clsr '/cgi';                      # returns /cgi
+
+    1;
+
+The clsr function takes two arguments, the shorthand to be translated, and an
+optional list of arguments to be passed to the last method appended to the
+shorthand.
 
 # SEE ALSO
 
 Along my travels I recall visiting a similar module on the CPAN called
 [Namespace::Dispatch](http://search.cpan.org/perldoc?Namespace::Dispatch) which provides somewhat of the same functionality.
-Additionally, since this module looks like something INGY would upload, you
-might want to check out his offerings also.
 
 # AUTHOR
 
