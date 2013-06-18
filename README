@@ -1,27 +1,31 @@
 NAME
-    Class::Forward - Traverse Class Namespaces
+    Class::Forward - Namespace Dispatch and Resolution
 
 VERSION
-    version 0.100004
+    version 0.100005
 
 SYNOPSIS
         use Class::Forward;
 
-        my $resolv = Class::Forward->new(namespace => 'MyApp');
-
-        # returns a MyApp::Data instance
-        my $data  = $resolv->forward('data.new');
-
-        # returns the string /myapp/data
-        my $string = $resolv->reverse('data.new');
+        # create a resolution object
+        my $res = Class::Forward->new(namespace => 'MyApp');
 
         # returns MyApp::Data
-        say $resolv->forward($string);
+        say $res->forward('data');
+
+        # returns a MyApp::Data instance
+        my $data  = $res->forward('data.new');
+
+        # returns the string /my_app/data
+        my $string = $res->reverse('data.new');
+
+        # returns MyApp::Data
+        say $res->forward($string);
 
 DESCRIPTION
     Class::Forward is designed to resolve Perl namespaces from shorthand
-    (which is simply a file-system path-like specification). Class::Forward
-    can also be used to dispatch method calls using said shorthand. See the
+    (which is simply a file-path-like specification). Class::Forward can
+    also be used to dispatch method calls using said shorthand. See the
     following exported functions for examples on how this can be used.
 
 EXPORTS
@@ -119,10 +123,10 @@ METHODS
 SEE ALSO
     Class::Forward was designed to provide shorthand and easy access to
     class namespaces in an environment where you're dealing with a multitude
-    of long well-named classes. In that vein, is provides an alternative to
-    modules like aliased, aliased::factory, as, and the like, e.g. modules
-    like Namespace::Dispatch which are similar enough to be mentioned but
-    really tends to a completely different issue.
+    of long well-named classes. In that vein, it provides an alternative to
+    modules like aliased, aliased::factory, as, and the like, and also
+    modules like Namespace::Dispatch which are similar enough to be
+    mentioned but really address a completely different issue.
 
 AUTHOR
     Al Newkirk <anewkirk@ana.io>

@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Traverse Class Namespaces",
+  "ABSTRACT" => "Namespace Dispatch and Resolution",
   "AUTHOR" => "Al Newkirk <anewkirk\@ana.io>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
   "NAME" => "Class::Forward",
   "PREREQ_PM" => {},
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.100004",
+  "VERSION" => "0.100005",
   "test" => {
     "TESTS" => "t/*.t"
   }
