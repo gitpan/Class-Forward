@@ -1,11 +1,11 @@
-# ABSTRACT: Traverse Class Namspaces
+# ABSTRACT: Traverse Class Namespaces
 
 package Class::Forward;
 
 use strict;
 use warnings;
 
-our $VERSION = '0.100003'; # VERSION
+our $VERSION = '0.100004'; # VERSION
 
 use Exporter ();
 
@@ -220,32 +220,26 @@ __END__
 
 =head1 NAME
 
-Class::Forward - Traverse Class Namspaces
+Class::Forward - Traverse Class Namespaces
 
 =head1 VERSION
 
-version 0.100003
+version 0.100004
 
 =head1 SYNOPSIS
 
-    package MyApp;
-
     use Class::Forward;
 
-    sub class {
+    my $resolv = Class::Forward->new(namespace => 'MyApp');
 
-        my ($self, $shorthand, @arguments) = @_;
+    # returns a MyApp::Data instance
+    my $data  = $resolv->forward('data.new');
 
-        my $class = Class::Forward->new(namespace => ref $self);
+    # returns the string /myapp/data
+    my $string = $resolv->reverse('data.new');
 
-        return $class->forward($shorthand, @arguments);
-
-    }
-
-    package main;
-
-    my $app  = MyApp->new;
-    my $data = $app->class('data.new'); # returns a new MyApp::Data object
+    # returns MyApp::Data
+    say $resolv->forward($string);
 
 =head1 DESCRIPTION
 
@@ -311,8 +305,8 @@ following is an example of how it functions:
     1;
 
 The clsr function takes three arguments, the shorthand to be translated
-(required), the offset (optional level of namspace nodes to omit
-left-to-right), and the delimeter to be used to generate the resulting path
+(required), the offset (optional level of namespace nodes to omit
+left-to-right), and the delimiter to be used to generate the resulting path
 (defaults to forward-slash).
 
 =head1 METHODS
@@ -332,26 +326,33 @@ all resolution requests.
 
 The forward method is used to resolve Perl namespaces from path-like shorthand.
 
-    say $self->forward('/my_app/example');
+    say $self->forward('example');
+    # given a default namespace of MyApp
     # prints MyApp::Example
 
 =head2 reverse
 
 The reverse method is used to generate path-like shorthand from Perl namespaces.
 
-    say $self->reverse('MyApp::Example');
-    # prints /my_app/example
+    say $self->reverse('Simple::Example');
+    # given a default namespace of MyApp
+    # prints /my_app/simple/example
 
-    say $self->reverse('MyApp::Example', 1);
-    # prints example
+    say $self->reverse('Simple::Example', 1);
+    # given a default namespace of MyApp
+    # prints simple/example
 
-    say $self->reverse('MyApp::Example', 0, '_');
-    # prints _my_app_example
+    say $self->reverse('Simple::Example', 1, '_');
+    # given a default namespace of MyApp
+    # prints simple_example
 
 =head1 SEE ALSO
 
-Along my travels I recall visiting a similar module on the CPAN called
-L<Namespace::Dispatch> which is similar enough to be mentioned but really
+Class::Forward was designed to provide shorthand and easy access to class
+namespaces in an environment where you're dealing with a multitude of long
+well-named classes. In that vein, is provides an alternative to modules like
+L<aliased>, L<aliased::factory>, L<as>, and the like, e.g. modules like
+L<Namespace::Dispatch> which are similar enough to be mentioned but really
 tends to a completely different issue.
 
 =head1 AUTHOR
