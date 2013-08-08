@@ -5,7 +5,7 @@ package Class::Forward;
 use strict;
 use warnings;
 
-our $VERSION = '0.100005'; # VERSION
+our $VERSION = '0.100006'; # VERSION
 
 use Exporter ();
 
@@ -16,21 +16,16 @@ our %CACHE  = ();
 
 
 sub clsf {
-
     return Class::Forward->new(namespace => (caller)[0])->forward(@_);
-
 }
 
 
 sub clsr {
-
     return Class::Forward->new(namespace => (caller)[0])->reverse(@_);
-
 }
 
 
 sub new {
-
     my $self = bless {}, (shift);
 
     my %args = @_ ? @_ : ();
@@ -38,23 +33,19 @@ sub new {
     $self->{namespace} = $args{namespace} if defined $args{namespace};
 
     return $self;
-
 }
 
 
 sub namespace {
-
     my ($self, $namespace) = @_;
 
     $self->{namespace} = $namespace if $namespace;
 
     return $self->{namespace};
-
 }
 
 
 sub forward {
-
     my ($self, $shorthand, @arguments) = @_;
 
     my $namespace = $self->namespace() || (caller)[0] || 'main';
@@ -178,12 +169,14 @@ sub forward {
         return $class;
 
     }
+}
 
+sub forward_lookup {
+    goto \&forward
 }
 
 
 sub reverse {
-
     my ($self, $shorthand, $offset, $delimiter) = @_;
 
     $self->namespace((caller)[0] || 'main') unless $self->namespace;
@@ -208,7 +201,10 @@ sub reverse {
 
     return join $delimiter,
         map { if ($_) { s/([a-z])([A-Z])/$1_\l$2/g; lc } } @pieces;
+}
 
+sub reverse_lookup {
+    goto \&reverse
 }
 
 
@@ -224,7 +220,7 @@ Class::Forward - Namespace Dispatch and Resolution
 
 =head1 VERSION
 
-version 0.100005
+version 0.100006
 
 =head1 SYNOPSIS
 
@@ -328,7 +324,8 @@ all resolution requests.
 
 =head2 forward
 
-The forward method is used to resolve Perl namespaces from path-like shorthand.
+The forward (or forward_lookup) method is used to resolve Perl namespaces from
+path-like shorthand.
 
     say $self->forward('example');
     # given a default namespace of MyApp
@@ -336,7 +333,8 @@ The forward method is used to resolve Perl namespaces from path-like shorthand.
 
 =head2 reverse
 
-The reverse method is used to generate path-like shorthand from Perl namespaces.
+The reverse method (or reverse_lookup) is used to generate path-like shorthand
+from Perl namespaces.
 
     say $self->reverse('Simple::Example');
     # given a default namespace of MyApp

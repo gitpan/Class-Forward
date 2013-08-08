@@ -1,10 +1,26 @@
 ==================================================
-Changes from 2012-06-18 00:00:00 +0000 to present.
+Changes from 2012-08-08 00:00:00 +0000 to present.
 ==================================================
 
 ---------------------------------------------
-version 0.100005 at 2013-06-18 02:28:08 +0000
+version 0.100006 at 2013-08-08 04:21:00 +0000
 ---------------------------------------------
+
+  Change: 4de4f8201293d2a9e62db600751ae205c93b3110
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-08-08 00:20:49 +0000
+
+    added forward and reverse look method aliases 
+
+---------------------------------------------
+version 0.100005 at 2013-06-18 02:28:12 +0000
+---------------------------------------------
+
+  Change: 33fc4b551564a6381d84bb1d04fdf2978f4cbbef
+  Author: Al Newkirk <anewkirk@ana.io>
+  Date : 2013-06-17 22:28:12 +0000
+
+    v0.100005 
 
   Change: 448f8fee5e27d03d873ff91ebf559363ea45b70c
   Author: Al Newkirk <anewkirk@ana.io>

@@ -2,7 +2,7 @@ NAME
     Class::Forward - Namespace Dispatch and Resolution
 
 VERSION
-    version 0.100005
+    version 0.100006
 
 SYNOPSIS
         use Class::Forward;
@@ -97,16 +97,16 @@ METHODS
         my $namespace = $self->namespace('MyApp');
 
   forward
-    The forward method is used to resolve Perl namespaces from path-like
-    shorthand.
+    The forward (or forward_lookup) method is used to resolve Perl
+    namespaces from path-like shorthand.
 
         say $self->forward('example');
         # given a default namespace of MyApp
         # prints MyApp::Example
 
   reverse
-    The reverse method is used to generate path-like shorthand from Perl
-    namespaces.
+    The reverse method (or reverse_lookup) is used to generate path-like
+    shorthand from Perl namespaces.
 
         say $self->reverse('Simple::Example');
         # given a default namespace of MyApp
